@@ -13,7 +13,7 @@ const Board = props => {
             row={cell.row}
             col={cell.col}
             className='cell'>
-              {cell.col}
+              {cell.value}
           </div>
         ))}
       </div>

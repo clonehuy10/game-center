@@ -8,20 +8,53 @@ const Game = () => {
   const [board, setBoard] = useState({
     rows: []
   })
+  const [player, setPlayer] = useState('')
 
-  const handleStart  = e => {
+  // Start game
+  const handleStart = e => {
     const result = drawBoard(e.target.id)
     setBoard({ rows: result })
-    console.log('board', board)
   }
 
+  // Play game
   const handleClick = e => {
-    console.log(e.target)
+    // Get row and col from html attributes
+    const row = e.target.attributes.row.value
+    const col = e.target.attributes.col.value
+    
+    const copy = Object.assign({}, board)
+    copy.rows[row][col].value = player
+
+    setBoard(copy)
+  }
+
+  // buttons to choose X or O for player
+  let buttons
+  if (player.length === 0) {
+    buttons = (
+      <div>
+        <button onClick={e => setPlayer(e.target.innerText)}>X</button>
+        <button onClick={e => setPlayer(e.target.innerText)}>O</button>
+      </div>
+    )
+  }
+
+  // buttons to pick game
+  let pickGame
+  if (board.rows.length === 0) {
+    pickGame = (
+      <div>
+        <button onClick={handleStart} id='7'>Small</button>
+        <button onClick={handleStart} id='10'>Medium</button>
+        <button onClick={handleStart} id='15'>Large</button>
+      </div>
+    )
   }
 
   return (
     <div className='container'>
-      <button onClick={handleStart} id='16'>Start</button>
+      {buttons}
+      {pickGame}
       <Board board={board} handleClick={handleClick} />
     </div>
   )
