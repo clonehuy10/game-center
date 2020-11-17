@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './Game.css'
 
 import Board from './Board'
-import { drawBoard } from '../Logic/Logic'
+import { drawBoard, checkWinner } from '../Logic/Logic'
 
 const Game = () => {
   const [board, setBoard] = useState({
@@ -26,6 +26,10 @@ const Game = () => {
     copy.rows[row][col].value = player
 
     setBoard(copy)
+    
+    // check winner after current move
+    // function takes a BOARD, and location of CURRENT move
+    console.log(checkWinner(copy, row, col))
   }
 
   // buttons to choose X or O for player
