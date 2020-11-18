@@ -16,13 +16,20 @@ export const drawBoard = num => {
   return rows
 }
 
-export const checkWinner = (board, row, col) => {
+export const checkWinner = (board, row, col, player) => {
+  // board size
+  const size = board.rows.length - 1
+
   // horizontal
   const horizontal = () => {
     let count = 1
 
     // moving right
     for (let i = 1; i < 5; i++) {
+      // stop when going out of the board
+      if (parseInt(col) + i > size) {
+        break
+      }
       if(board.rows[row][col].value === board.rows[row][parseInt(col) + i].value) {
         count += 1
       } else {
@@ -32,6 +39,10 @@ export const checkWinner = (board, row, col) => {
     }
     // moving left
     for (let i = 1; i < 5; i++) {
+      // stop when going out of the board
+      if (parseInt(col) - i < 0) {
+        break
+      }
       if(board.rows[row][col].value === board.rows[row][parseInt(col) - i].value) {
         count += 1
       } else {
@@ -48,8 +59,12 @@ export const checkWinner = (board, row, col) => {
   const vertical = () => {
     let count = 1
 
-    // moving up
+    // moving down
     for (let i = 1; i < 5; i++) {
+      // stop when going out of the board
+      if (parseInt(row) + i > size) {
+        break
+      }
       if(board.rows[row][col].value === board.rows[parseInt(row) + i][col].value) {
         count += 1
       } else {
@@ -57,8 +72,12 @@ export const checkWinner = (board, row, col) => {
         break
       }
     }
-    // moving down
+    // moving up
     for (let i = 1; i < 5; i++) {
+      // stop when going out of the board
+      if (parseInt(row) - i < 0) {
+        break
+      }
       if(board.rows[row][col].value === board.rows[parseInt(row) - i][col].value) {
         count += 1
       } else {
@@ -75,8 +94,12 @@ export const checkWinner = (board, row, col) => {
   const diagonal1 = () => {
     let count = 1
 
-    // moving downer right
+    // moving down right
     for (let i = 1; i < 5; i++) {
+      // stop when going out of the board
+      if (parseInt(row) + i > size || parseInt(col) + i > size) {
+        break
+      }
       if(board.rows[row][col].value === board.rows[parseInt(row) + i][parseInt(col) + i].value) {
         count += 1
       } else {
@@ -84,8 +107,12 @@ export const checkWinner = (board, row, col) => {
         break
       }
     }
-    // moving upper left
+    // moving up left
     for (let i = 1; i < 5; i++) {
+      // stop when going out of the board
+      if (parseInt(row) - i < 0 || parseInt(col) - i < 0) {
+        break
+      }
       if(board.rows[row][col].value === board.rows[parseInt(row) - i][parseInt(col) - i].value) {
         count += 1
       } else {
@@ -102,8 +129,12 @@ export const checkWinner = (board, row, col) => {
   const diagonal2 = () => {
     let count = 1
 
-    // moving upper right
+    // moving up right
     for (let i = 1; i < 5; i++) {
+      // stop when going out of the board
+      if (parseInt(row) - i < 0 || parseInt(col) + i > size) {
+        break
+      }
       if(board.rows[row][col].value === board.rows[parseInt(row) - i][parseInt(col) + i].value) {
         count += 1
       } else {
@@ -111,8 +142,12 @@ export const checkWinner = (board, row, col) => {
         break
       }
     }
-    // moving downer left
+    // moving down left
     for (let i = 1; i < 5; i++) {
+      // stop when going out of the board
+      if (parseInt(row) + i > size || parseInt(col) - i < 0) {
+        break
+      }
       if(board.rows[row][col].value === board.rows[parseInt(row) + i][parseInt(col) - i].value) {
         count += 1
       } else {
@@ -125,9 +160,20 @@ export const checkWinner = (board, row, col) => {
     return count === 5 ? true : false
   }
 
-  // if any case is true, return true
-  if (horizontal() || vertical() || diagonal1() || diagonal2()) {
-    return true
+  // check tie
+  const tie = () => {
+    return board.rows.every(row => row.every(col => col.value !== ''))
   }
-  return false
+
+  // if any case is true, return result basing on who's wining
+  if (horizontal() || vertical() || diagonal1() || diagonal2()) {
+    let result
+    board.rows[row][col].value === player ? result = 10 : result = -10
+
+    return result
+  } else if (tie()) {
+    return 0
+  }
+
+  return null
 }
