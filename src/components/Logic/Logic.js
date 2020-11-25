@@ -52,7 +52,7 @@ export const checkWinner = (board, row, col, player) => {
     }
 
     // 5 points then return true
-    return count === 5 ? true : false
+    return count >= 5 ? true : false
   }
 
   // vertical
@@ -87,7 +87,7 @@ export const checkWinner = (board, row, col, player) => {
     }
 
     // 5 points then return true
-    return count === 5 ? true : false
+    return count >= 5 ? true : false
   }
 
   // diagonal
@@ -122,7 +122,7 @@ export const checkWinner = (board, row, col, player) => {
     }
 
     // 5 points then return true
-    return count === 5 ? true : false
+    return count >= 5 ? true : false
   }
 
   // diagonal
@@ -157,7 +157,7 @@ export const checkWinner = (board, row, col, player) => {
     }
 
     // 5 points then return true
-    return count === 5 ? true : false
+    return count >= 5 ? true : false
   }
 
   // check tie
@@ -175,5 +175,5 @@ export const checkWinner = (board, row, col, player) => {
     return 0
   }
 
-  return null
+  return 1
 }

@@ -5,10 +5,10 @@ const Board = props => {
 
   return (
     board.rows.map(row => (
-      <div key={board.rows.indexOf(row)} className='row'>
+      <div key={Math.random()} className='row'>
         {row.map(cell => (
           <div
-            key={row.indexOf(cell)}
+            key={Math.random()}
             onClick={handleClick}
             row={cell.row}
             col={cell.col}

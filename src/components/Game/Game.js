@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './Game.css'
 
 import Board from './Board'
-import { drawBoard } from '../Logic/Logic'
+import { drawBoard, checkWinner } from '../Logic/Logic'
 import { compMove } from '../Logic/AI'
 
 const Game = () => {
@@ -19,6 +19,9 @@ const Game = () => {
 
   // Play game
   const handleClick = e => {
+    if (e.target.innerText !== '') {
+      return
+    }
     // Get row and col from html attributes
     const row = e.target.attributes.row.value
     const col = e.target.attributes.col.value
@@ -26,6 +29,12 @@ const Game = () => {
     // input player's move into the board
     let copy = Object.assign({}, board)
     copy.rows[row][col].value = player
+
+    // check winner
+    if (checkWinner(copy, row, col, player) !== 1) {
+      setBoard(copy)
+      return
+    }
     
     // Computer Move
     const checkEnd = copy.rows.every(row => row.every(col => col.value !== ''))
@@ -53,7 +62,7 @@ const Game = () => {
   if (board.rows.length === 0) {
     pickGame = (
       <div>
-        <button onClick={handleStart} id='5'>Small</button>
+        <button onClick={handleStart} id='7'>Small</button>
         <button onClick={handleStart} id='10'>Medium</button>
         <button onClick={handleStart} id='15'>Large</button>
       </div>
